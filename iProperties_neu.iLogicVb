@@ -1,0 +1,53 @@
+﻿' <FireOthersImmediately>False</FireOthersImmediately>
+BestellNr = iProperties.Value("Project", "Stock Number")
+Benennung = iProperties.Value("Summary", "Title")
+IdNr = iProperties.Value("Custom", "Id-Nummer")
+Benutzerdefiniert = iProperties.Value("Custom", "Benutzerdefiniert")
+File1 = ThisDoc.Path & "\OldVersions\Backup.ipt" 'Backup Speicherpfad rlativ zum aktuellen Speicherort.
+File2 = ThisDoc.PathAndFileName(True)
+A = 0
+B = 0
+Antwort = 0
+
+ThisDoc.Document.SaveAs(File1, True)
+Do Until B = 5
+	B = B + 1
+Loop
+i = MessageBox.Show("Eine Backup Datei wurde erstellt." & vbCrLf & File1, _
+"Backup info", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1)
+Do Until A = B
+	A = 0
+	If BestellNr = "" Then
+		A = 0
+		BestellNr = InputBox("Bitte Lagernummer/Warennummer/" & vbCrLf & "Versorgungsnummer(military)/Bestandsnummer eingeben" & vbCrLf & "(" & BestellNr & ")", "iProperties Eingabe")
+		iProperties.Value("Project", "Stock Number") = BestellNr
+	Else A = A + 1
+	End If
+	If Benennung = "" Then
+		A = 0
+		Benennung = InputBox("Bitte Benennung eingeben" & vbCrLf & "(" & Benennung & ")", "iProperties Eingabe")
+		iProperties.Value("Summary", "Title") = Benennung
+	Else A = A + 1
+	End If
+		If IdNr = "" Then
+		A = 0
+		IdNr = InputBox("Bitte Id-Nummer eigenschaft eingeben" & vbCrLf & "(" & IdNr & ")", "iProperties Eingabe")
+		iProperties.Value("Custom", "Id-Nummer")  = IdNr
+	Else A = A + 1
+	End If
+	If Benutzerdefiniert = "" Then
+		A = 0
+		Benutzerdefiniert = InputBox("Bitte Benutzerdefiniert eigenschaft eingeben" & vbCrLf & "(" & Benutzerdefiniert & ")", "iProperties Eingabe")
+		iProperties.Value("Custom", "Benutzerdefiniert")  = Benutzerdefiniert
+	Else A = A + 1
+	End If
+	
+	Antwort = MessageBox.Show("Speichervorgang abbrechen?", "iProperties", _
+	MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)
+	
+	If Antwort = 6 Then
+		MessageBox.Show("Fehlercode: 0x80070057 wird abgerufen..." & vbCrLf & vbCrLf & "Bitte bestätigen!", "Admin Info")
+		ThisDoc.Document.SaveAs(File2, False)
+		Exit Do
+	End If
+Loop
