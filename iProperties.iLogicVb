@@ -1,4 +1,7 @@
 ﻿' <FireOthersImmediately>False</FireOthersImmediately>
+iProperties.Value("Custom", "Id-Nummer") = ""
+iProperties.Value("Custom", "Benutzerdefiniert") = ""
+
 BestellNr = iProperties.Value("Project", "Stock Number")
 Benennung = iProperties.Value("Summary", "Title")
 IdNr = iProperties.Value("Custom", "Id-Nummer")
